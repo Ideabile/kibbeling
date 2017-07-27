@@ -41,7 +41,7 @@
     "test": "cross-env NODE_ENV=test nyc mocha",
     "watch:test": "mocha --watch",
     "validate": "npm-run-all --parallel lint test build",
-    "prepublish": "npm-run-all validate release commit",
+    "prepublish": "npm-run-all validate release",
     "release": "unleash -p"
   },
   "config": {
