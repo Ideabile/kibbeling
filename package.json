@@ -1,6 +1,6 @@
 {
   "name": "kibbeling",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Markdown as a Service",
   "main": "dist/index.js",
   "repository": {
@@ -41,8 +41,8 @@
     "test": "cross-env NODE_ENV=test nyc mocha",
     "watch:test": "mocha --watch",
     "validate": "npm-run-all --parallel lint test build",
-    "prepublish": "npm run validate",
-    "release": "npm publish && unleash -p"
+    "prepublish": "npm-run-all validate release commit",
+    "release": "unleash -p"
   },
   "config": {
     "commitizen": {
