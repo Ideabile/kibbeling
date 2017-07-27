@@ -27,7 +27,7 @@ const MapFiles = (path, file) => {
 
   // Markdown
   if (exists(fullPath) && isFile(fullPath) && isMarkdown(fullPath)) {
-    let obj = Object.assign(GetFileContent(fullPath), { name: file, type: 'content' })
+    let obj = Object.assign(GetFileContent(fullPath), { name: file.replace('.md', ''), type: 'content' })
     delete obj.body
     return obj
   }
