@@ -1,6 +1,8 @@
 const parseArg = require('minimist')
 const Kib = require('./index')
 
+const configs = require('./configs')
+
 const argv = parseArg(process.argv.slice(2), {
   alias: {
     H: 'help',
@@ -13,11 +15,11 @@ const argv = parseArg(process.argv.slice(2), {
   boolean: ['h'],
   string: ['c'],
   default: {
-    p: null,
-    h: null,
-    c: null,
-    a: null,
-    g: false
+    p: configs.port,
+    h: configs.host,
+    c: configs.contentDir,
+    a: configs.apiDir,
+    g: configs.generate
   }
 });
 
