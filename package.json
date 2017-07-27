@@ -3,6 +3,21 @@
   "version": "1.0.0",
   "description": "Markdown as a Service",
   "main": "dist/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ideabile/kibbeling.git"
+  },
+  "keywords": [
+    "api",
+    "library",
+    "restful",
+    "markdown",
+    "json"
+  ],
+  "files": [
+    "dist",
+    ".bin"
+  ],
   "bin": {
     "kib": "./.bin/kibbeling"
   },
@@ -27,6 +42,15 @@
     "watch:test": "mocha --watch",
     "validate": "npm-run-all --parallel lint test build",
     "release": "semantic-release pre && npm publish && semantic-release post"
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    },
+    "ghooks": {
+      "pre-commit": "npm run validate",
+      "commit-msg": "validate-commit-msg"
+    }
   },
   "author": "Mauro Mandracchia <info@ideabile.com>",
   "license": "MIT",
