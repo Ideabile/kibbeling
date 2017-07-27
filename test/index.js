@@ -5,14 +5,14 @@ const { existsSync, unlinkSync, readFileSync } = require('fs')
 const { removeSync } = require('fs-extra')
 const config = { port: 3011, contentDir: '.' }
 
-const startServer = (server) => {
+const startServer = (server, done) => {
   server.start(_err => {
-    err = _err
+    if (done) done()
   })
 }
-const stopServer = (server) => {
+const stopServer = (server, done) => {
   server.stop(() => {
-    console.log(`Server stop`)
+    if( done) done()
   })
 }
 
