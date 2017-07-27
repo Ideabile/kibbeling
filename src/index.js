@@ -36,11 +36,6 @@ module.exports = function Kibbeling (options) {
 
   server.route(require('./content'))
 
-  server.ext('onRequest', (req, res) => {
-    console.log(`Request: ${req.path}`)
-    res.continue()
-  })
-
   // Add Api routes if we find
   if ( apiDir && exists(apiDir) ) {
 
