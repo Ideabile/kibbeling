@@ -1,7 +1,20 @@
 const { expect } = require('chai')
 const axios  = require('axios')
 const hapi = require('hapi')
+const { existsSync, unlinkSync, readFileSync } = require('fs')
+const { removeSync } = require('fs-extra')
 const config = { port: 3011, contentDir: '.' }
+
+const startServer = (server) => {
+  server.start(_err => {
+    err = _err
+  })
+}
+const stopServer = (server) => {
+  server.stop(() => {
+    console.log(`Server stop`)
+  })
+}
 
 describe('Kibbeling', () => {
   const Kib = require('./../src/index.js')
@@ -14,16 +27,11 @@ describe('Kibbeling', () => {
 
   })
 
-
   describe('Should start a server', () => {
     const server = new Kib(config)
 
     let err
-    before(() => {
-      server.start(_err => {
-        err = _err
-      })
-    })
+    before(startServer.bind(null, server))
 
     it('should return a server', () =>{
       expect(server instanceof hapi.Server).to.equal(true)
@@ -33,22 +41,14 @@ describe('Kibbeling', () => {
       expect(err).to.equal(undefined)
     })
 
-    after(() => {
-      server.stop(() => {
-        console.log('Server stop')
-      })
-    })
+    after(stopServer.bind(null, server))
 
   })
 
   describe('Testing content behavior', () => {
     const server = new Kib(config)
 
-    before(() => {
-      server.start(() => {
-        console.log(`Server start`)
-      })
-    })
+    before(startServer.bind(null, server))
 
     it('should return an array', async () => {
       let { data } = await axios('http://localhost:3011/content.json')
@@ -60,8 +60,7 @@ describe('Kibbeling', () => {
       expect(data.filter( file => file.name === 'Readme').length).to.equal(1)
     })
 
-
-    it('Doesn\'t return body during dir list', async () => {
+    it("Doesn't return body during dir list", async () => {
       let { data } = await axios('http://localhost:3011/content.json')
       expect(data.filter( file => file.body).length).to.equal(0)
     })
@@ -81,10 +80,30 @@ describe('Kibbeling', () => {
       expect(data.body).to.be.an('string')
     })
 
+    after(stopServer.bind(null, server))
+
+  })
+
+  describe('Caching', () => {
+    const path = `content/Readme.json`
+    const generate = `.test_cache`
+
+    const server = new Kib(Object.assign(config, { generate }))
+    const basePath = `${process.cwd()}/${generate}`
+    const expected = `${basePath}/${path}`
+
+    before(startServer.bind(null, server))
+
+    it('Should create a file', async () => {
+      let { data } = await axios(`http://localhost:3011/${path}`)
+      let fileString = JSON.stringify(JSON.parse(readFileSync(expected).toString()))
+      expect(fileString.length).to.equal(JSON.stringify(data).length)
+      expect(existsSync(expected)).to.equal(true)
+    })
+
     after(() => {
-      server.stop(() => {
-        console.log(`Server stop`)
-      })
+      if ( existsSync(expected) ) removeSync(basePath)
+      stopServer(server)
     })
 
   })
