@@ -1,6 +1,6 @@
 {
   "name": "kibbeling",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Markdown as a Service",
   "main": "dist/index.js",
   "repository": {
