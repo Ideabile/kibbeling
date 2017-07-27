@@ -2,6 +2,10 @@
 ### 1.0.4 (2017-07-27)
 
 
+<a name="1.0.4"></a>
+### 1.0.4 (2017-07-27)
+
+
 #### Bug Fixes
 
 * Make sure default settings are pick ([bd809d92](https://github.com/Ideabile/kibbeling.git/commit/bd809d92))
